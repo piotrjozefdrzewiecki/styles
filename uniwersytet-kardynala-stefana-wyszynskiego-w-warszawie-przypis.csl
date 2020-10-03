@@ -4,8 +4,8 @@
   <info>
     <title>Uniwersytet Kardynała Stefana Wyszyńskiego w Warszawie (przypis, Polish)</title>
     <title-short>UKSW</title-short>
-    <id>http://www.zotero.org/styles/uniwersytet-kardynala-stefana-wyszynskiego-w-warszawie-przypis</id>
-    <link href="http://www.zotero.org/styles/uniwersytet-kardynala-stefana-wyszynskiego-w-warszawie-przypis" rel="self"/>
+    <id>http://www.zotero.org/styles/uniwersytet-kardynała-stefana-wyszyńskiego-w-warszawie-przypis</id>
+    <link href="http://www.zotero.org/styles/uniwersytet-kardynała-stefana-wyszyńskiego-w-warszawie-przypis" rel="self"/>
     <link href="https://wydawnictwo.uksw.edu.pl/" rel="documentation"/>
     <author>
       <name>Piotr Drzewiecki</name>
@@ -13,7 +13,7 @@
     </author>
     <category citation-format="note"/>
     <category field="generic-base"/>
-    <updated>2020-04-02T08:26:39+00:00</updated>
+    <updated>2020-10-03T16:25:45+00:00</updated>
     <rights license="http://creativecommons.org/licenses/by-sa/3.0/">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>
   </info>
   <locale xml:lang="pl">
@@ -81,23 +81,33 @@
   <macro name="author">
     <choose>
       <if match="any" variable="author">
-        <names variable="author" delimiter=", " suffix=",">
-          <name et-al-use-first="3" et-al-use-last="true" initialize-with=". " name-as-sort-order="all" sort-separator=" "/>
-          <label form="short" plural="never"/>
-          <substitute>
-            <names variable="editor"/>
-            <names variable="translator"/>
-            <choose>
-              <if type="report">
-                <text variable="publisher"/>
-                <text macro="title"/>
-              </if>
-              <else>
-                <text macro="title"/>
-              </else>
-            </choose>
-          </substitute>
-        </names>
+        <choose>
+          <if type="motion_picture" match="any">
+            <names variable="author" delimiter="," suffix=" (reż.),">
+              <name et-al-use-last="true" initialize-with="." name-as-sort-order="all" sort-separator=" "/>
+              <label form="short" plural="never"/>
+            </names>
+          </if>
+          <else>
+            <names variable="author" delimiter=", " suffix=",">
+              <name et-al-use-first="3" et-al-use-last="true" initialize-with=". " name-as-sort-order="all" sort-separator=" "/>
+              <label form="short" plural="never"/>
+              <substitute>
+                <names variable="editor"/>
+                <names variable="translator"/>
+                <choose>
+                  <if type="report">
+                    <text variable="publisher"/>
+                    <text macro="title"/>
+                  </if>
+                  <else>
+                    <text macro="title"/>
+                  </else>
+                </choose>
+              </substitute>
+            </names>
+          </else>
+        </choose>
       </if>
     </choose>
   </macro>
@@ -629,9 +639,18 @@
     <layout delimiter="; " suffix=".">
       <choose>
         <if match="any" variable="author">
-          <names variable="author" suffix=", ">
-            <name delimiter-precedes-et-al="never" delimiter-precedes-last="never" initialize-with="."/>
-          </names>
+          <choose>
+            <if type="motion_picture" match="any">
+              <names variable="author" suffix=" (reż.), ">
+                <name initialize-with="."/>
+              </names>
+            </if>
+            <else>
+              <names variable="author" suffix=", ">
+                <name delimiter-precedes-et-al="never" delimiter-precedes-last="never" initialize-with="."/>
+              </names>
+            </else>
+          </choose>
         </if>
       </choose>
       <text variable="title" font-style="italic" suffix=", "/>
@@ -713,6 +732,11 @@
               <date form="text" variable="accessed" prefix=" (dostęp: " suffix=")"/>
             </if>
           </choose>
+        </if>
+      </choose>
+      <choose>
+        <if type="motion_picture" match="any">
+          <date form="text" date-parts="year-month-day" variable="issued"/>
         </if>
       </choose>
     </layout>
